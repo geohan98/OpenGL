@@ -19,26 +19,36 @@ project "OpenGL"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("build/" .. outputdir .. "/%{prj.name}")
+	
+	defines
+	{
+		"GLEW_STATIC"
+	}
 
 	files
 	{
 		"%{prj.name}/include/**.h",
-		"%{prj.name}/src/**.cpp",
-		"Vendor/GLAD/src/glad.c"
+		"%{prj.name}/src/**.cpp"
 	}
 
 	includedirs
 	{
-		"vendor/GLFW64/include",
-		"vendor/Glad/include",
+		"vendor/GLFW/include",
+		"vendor/GLEW/include",
 		"%{prj.name}/include"
 	}
 	
-	libdirs { "vendor/GLFW64/lib" }
+	libdirs 
+	{ 
+	"vendor/GLFW/lib", 
+	"vendor/GLEW/lib/Release/x64"
+	}
 	
 	links 
 	{
+		"opengl32",
 		"GLFW3",
+		"glew32s"
 	}
 	
 	
