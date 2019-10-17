@@ -12,6 +12,9 @@
     <ClInclude Include="include\IndexBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Shader.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\VertexArray.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -21,7 +24,6 @@
     <ClInclude Include="include\VertexBufferLayout.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp">
@@ -30,12 +32,14 @@
     <ClCompile Include="src\IndexBuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\VertexArray.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\VertexBuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Shader.cpp" />
   </ItemGroup>
 </Project>
