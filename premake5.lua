@@ -41,7 +41,7 @@ project "OpenGL"
 	libdirs 
 	{ 
 	"vendor/GLFW/lib", 
-	"vendor/GLEW/lib/Release/x64"
+	"vendor/GLEW/lib"
 	}
 	
 	links 

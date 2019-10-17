@@ -12,11 +12,13 @@
     <ClInclude Include="include\IndexBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\VertexArray.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\VertexBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\VertexBufferLayout.h" />
-    <ClInclude Include="include\VertexArray.h">
+    <ClInclude Include="include\VertexBufferLayout.h">
       <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
@@ -27,10 +29,10 @@
     <ClCompile Include="src\IndexBuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\VertexBuffer.cpp">
+    <ClCompile Include="src\VertexArray.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\VertexArray.cpp">
+    <ClCompile Include="src\VertexBuffer.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
