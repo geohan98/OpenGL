@@ -5,25 +5,30 @@
 
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "VertexArray.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
+void processInput(GLFWwindow* window);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
-const char *vertexShaderSource = "#version 330 core\n"
+const char* vertexShaderSource = "#version 330 core\n"
 "layout (location = 0) in vec3 aPos;\n"
+"layout (location = 1) in vec4 aColor;\n"
+"out vec4 color;\n"
 "void main()\n"
 "{\n"
 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+"	color = aColor;\n"
 "}\0";
-const char *fragmentShaderSource = "#version 330 core\n"
+const char* fragmentShaderSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
+"in vec4 color;\n"
 "void main()\n"
 "{\n"
-"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"   FragColor = color;\n"
 "}\n\0";
 
 int main()
@@ -97,30 +102,24 @@ int main()
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
-		-0.5f, -0.5f, 0.0f, // tl 0
-		 0.5f, -0.5f, 0.0f, // tr 1
-		 0.5f,  0.5f, 0.0f, // bl 2
-		 -0.5f,  0.5f, 0.0f  // br 3
+		-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+		 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+		 0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
 	};
 
 	unsigned int indices[] = {
-		0,1,2,
-		2,3,0
+		0,1,2
 	};
 
-	unsigned int VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
+	VertexArray va;
+	VertexBuffer vb(vertices, sizeof(vertices));
 
-	VertexBuffer vb(vertices,sizeof(vertices));
+	VertexBufferLayout layout;
+	layout.Push<float>(3);
+	layout.Push<float>(4);
+	va.AddBuffer(vb, layout);
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0,3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-	IndexBuffer ib(indices, 6);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
+	IndexBuffer ib(indices, 3);
 
 	// render loop
 	// -----------
@@ -137,8 +136,9 @@ int main()
 
 		// draw our first triangle
 		glUseProgram(shaderProgram);
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+		va.Bind();
+		ib.Bind();
+		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 		// glBindVertexArray(0); // no need to unbind it every time 
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -149,7 +149,6 @@ int main()
 
 	// optional: de-allocate all resources once they've outlived their purpose:
 	// ------------------------------------------------------------------------
-	glDeleteVertexArrays(1, &VAO);
 
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
@@ -159,7 +158,7 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
+void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
