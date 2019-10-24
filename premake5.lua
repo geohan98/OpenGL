@@ -28,7 +28,8 @@ project "OpenGL"
 	files
 	{
 		"%{prj.name}/include/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"vendor/STB/stb_image.cpp"
 	}
 
 	includedirs
@@ -36,6 +37,7 @@ project "OpenGL"
 		"vendor",
 		"vendor/GLFW/include",
 		"vendor/GLEW/include",
+		"vendor/GLM",
 		"%{prj.name}/include"
 	}
 	

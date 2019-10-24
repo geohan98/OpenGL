@@ -1,7 +1,6 @@
 #include "texture.h"
 
 #include <GL/glew.h>
-#define STB_IMAGE_IMPLEMENTATION
 #include <STB/stb_image.h>
 
 #include <iostream>
@@ -20,6 +19,7 @@ Texture::Texture(const std::string& path) : m_RendererID(0), m_FilePath(path), m
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LocalBuffer);
+	glGenerateMipmap(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	if (m_LocalBuffer)

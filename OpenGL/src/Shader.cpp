@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 
+
+
 int Shader::GetUniformLocation(const std::string& name)
 {
 	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
@@ -34,6 +36,11 @@ void Shader::setUniform4f(const std::string& name, float f1, float f2, float f3,
 void Shader::setUniform3f(const std::string& name, float f1, float f2, float f3)
 {
 	glUniform3f(GetUniformLocation(name), f1, f2, f3);
+}
+
+void Shader::setUniformMat4f(const std::string & name, glm::mat4& mat)
+{
+	glUniformMatrix4fv(GetUniformLocation(name), 1 , GL_FALSE, glm::value_ptr(mat));
 }
 
 Shader::Shader(const std::string& vertexShader, const std::string& fragShader)

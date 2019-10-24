@@ -5,6 +5,10 @@
 #include <string>
 #include <unordered_map>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 class Shader
 {
 private:
@@ -26,5 +30,6 @@ public:
 	void setUniform1i(const std::string& name, int value);
 	void setUniform4f(const std::string& name, float f1, float f2, float f3, float f4);
 	void setUniform3f(const std::string& name, float f1, float f2, float f3);
+	void setUniformMat4f(const std::string& name, glm::mat4& mat);
 
 };
