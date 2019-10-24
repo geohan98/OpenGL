@@ -41,9 +41,6 @@ int main()
 	glewInit();
 
 	Shader shader("res/shaders/vertex.shader", "res/shaders/frag.shader");
-	shader.setUniform1i("u_Texture", 0);
-
-	Texture texture("res/textures/wall.jpg");
 
 	float vertices[6 * 24] = {
 				-0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.2f, // red square
@@ -110,28 +107,25 @@ int main()
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	shader.setUniformMat4f("model", model);
 
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-	shader.setUniformMat4f("view", view);
 
 	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1.3f, 0.1f, 100.0f);
-	shader.setUniformMat4f("proj", proj);
+
+	glm::mat4 MVP = proj * view * model;
+	shader.setUniformMat4f("MVP", MVP);
+
+	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+	shader.setUniform3f("lightPos",lightPos.x, lightPos.y, lightPos.z);
+	shader.setUniform3f("lightColor",1.0, 1.0, 1.0);
 
 	while (!glfwWindowShouldClose(window))
 	{
 		//Input
 		processInput(window);
 		//Draw
-		shader.Bind();
-		model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f) / 500, glm::vec3(0.5f, 1.0f, 0.0f));
-		shader.setUniformMat4f("model", model);
-		shader.Unbind();
-		
-
 		renderer.Clear();
-		texture.Bind();
 		renderer.Draw(va, ib, shader);
 		//Buffers
 		glfwSwapBuffers(window);
