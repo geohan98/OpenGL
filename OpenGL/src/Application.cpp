@@ -44,36 +44,31 @@ int main()
 
 	Shader shader("res/shaders/vertex.shader", "res/shaders/frag.shader");
 
-	float vertices[] = {
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	float vertices[6 * 24] = {
+			-0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.2f, // red square
+			 0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.2f,
+			 0.5f,  0.5f, -0.5f, 0.8f, 0.2f, 0.2f,
+			-0.5f,  0.5f, -0.5f,  0.8f, 0.2f, 0.2f,
+			-0.5f, -0.5f, 0.5f, 0.2f, 0.8f, 0.2f, // green square
+			 0.5f, -0.5f, 0.5f, 0.2f, 0.8f, 0.2f,
+			 0.5f,  0.5f, 0.5f, 0.2f, 0.8f, 0.2f,
+			-0.5f,  0.5f, 0.5f,  0.2f, 0.8f, 0.2f,
+			-0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.8f, // magenta(ish) square
+			 0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.8f,
+			 0.5f, -0.5f, 0.5f, 0.8f, 0.2f, 0.8f,
+			-0.5f, -0.5f, 0.5f,  0.8f, 0.2f, 0.8f,
+			-0.5f, 0.5f, -0.5f, 0.8f, 0.8f, 0.2f, // yellow square 
+			 0.5f, 0.5f, -0.5f, 0.8f, 0.8f, 0.2f,
+			 0.5f, 0.5f, 0.5f, 0.8f, 0.8f, 0.2f,
+			-0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.2f,
+			-0.5f, -0.5f, -0.5f, 0.2f, 0.8f, 0.8f, // Cyan(ish) square 
+			-0.5f,  0.5f, -0.5f,  0.2f, 0.8f, 0.8f,
+			-0.5f,  0.5f, 0.5f, 0.2f, 0.8f, 0.8f,
+			-0.5f,  -0.5f, 0.5f, 0.2f, 0.8f, 0.8f,
+			0.5f, -0.5f, -0.5f, 0.2f, 0.2f, 0.8f, // Blue square 
+			0.5f,  0.5f, -0.5f,  0.2f, 0.2f, 0.8f,
+			0.5f,  0.5f, 0.5f, 0.2f, 0.2f, 0.8f,
+			0.5f,  -0.5f, 0.5f, 0.2f, 0.2f, 0.8f
 	};
 
 	unsigned int indices[3 * 12] = {
@@ -122,18 +117,16 @@ int main()
 	shader.setUniformMat4f("proj", proj);
 
 
-	Light light;
-	light.m_Colour = glm::vec3(1.0f);
-	light.m_position = glm::vec3(1.2f, 1.0f, 2.0f);
-
-	shader.setUniform3f("lightPos", light.m_position);
-	shader.setUniform3f("lightColor", light.m_Colour);
-
 	while (!glfwWindowShouldClose(window))
 	{
 		//Input
 		processInput(window);
 		//Draw
+		shader.Bind();
+		model = glm::rotate(model, (float)glfwGetTime()  / 100 * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+		shader.setUniformMat4f("model", model);
+
+
 		renderer.Clear();
 		renderer.Draw(va, ib, shader);
 		//Buffers
