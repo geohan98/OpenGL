@@ -36,6 +36,7 @@
     <ClInclude Include="include\texture.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\light.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\vendor\STB\stb_image.cpp">

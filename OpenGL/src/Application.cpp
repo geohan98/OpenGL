@@ -14,6 +14,8 @@
 #include "texture.h"
 #include "renderer.h"
 
+#include "light.h"
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
@@ -42,31 +44,36 @@ int main()
 
 	Shader shader("res/shaders/vertex.shader", "res/shaders/frag.shader");
 
-	float vertices[6 * 24] = {
-				-0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.2f, // red square
-				 0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.2f,
-				 0.5f,  0.5f, -0.5f, 0.8f, 0.2f, 0.2f,
-				-0.5f,  0.5f, -0.5f,  0.8f, 0.2f, 0.2f,
-				-0.5f, -0.5f, 0.5f, 0.2f, 0.8f, 0.2f, // green square
-				 0.5f, -0.5f, 0.5f, 0.2f, 0.8f, 0.2f,
-				 0.5f,  0.5f, 0.5f, 0.2f, 0.8f, 0.2f,
-				-0.5f,  0.5f, 0.5f,  0.2f, 0.8f, 0.2f,
-				-0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.8f, // magenta(ish) square
-				 0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.8f,
-				 0.5f, -0.5f, 0.5f, 0.8f, 0.2f, 0.8f,
-				-0.5f, -0.5f, 0.5f,  0.8f, 0.2f, 0.8f,
-				-0.5f, 0.5f, -0.5f, 0.8f, 0.8f, 0.2f, // yellow square 
-				 0.5f, 0.5f, -0.5f, 0.8f, 0.8f, 0.2f,
-				 0.5f, 0.5f, 0.5f, 0.8f, 0.8f, 0.2f,
-				-0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.2f,
-				-0.5f, -0.5f, -0.5f, 0.2f, 0.8f, 0.8f, // Cyan(ish) square 
-				-0.5f,  0.5f, -0.5f,  0.2f, 0.8f, 0.8f,
-				-0.5f,  0.5f, 0.5f, 0.2f, 0.8f, 0.8f,
-				-0.5f,  -0.5f, 0.5f, 0.2f, 0.8f, 0.8f,
-				0.5f, -0.5f, -0.5f, 0.2f, 0.2f, 0.8f, // Blue square 
-				0.5f,  0.5f, -0.5f,  0.2f, 0.2f, 0.8f,
-				0.5f,  0.5f, 0.5f, 0.2f, 0.2f, 0.8f,
-				0.5f,  -0.5f, 0.5f, 0.2f, 0.2f, 0.8f
+	float vertices[] = {
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
 	};
 
 	unsigned int indices[3 * 12] = {
@@ -99,26 +106,28 @@ int main()
 
 	IndexBuffer ib(indices, 36);
 
-
-
 	Renderer renderer;
 
 	shader.Bind();
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	shader.setUniformMat4f("model", model);
 
 	glm::mat4 view = glm::mat4(1.0f);
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+	shader.setUniformMat4f("view", view);
 
 	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1.3f, 0.1f, 100.0f);
+	shader.setUniformMat4f("proj", proj);
 
-	glm::mat4 MVP = proj * view * model;
-	shader.setUniformMat4f("MVP", MVP);
 
-	glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
-	shader.setUniform3f("lightPos",lightPos.x, lightPos.y, lightPos.z);
-	shader.setUniform3f("lightColor",1.0, 1.0, 1.0);
+	Light light;
+	light.m_Colour = glm::vec3(1.0f);
+	light.m_position = glm::vec3(1.2f, 1.0f, 2.0f);
+
+	shader.setUniform3f("lightPos", light.m_position);
+	shader.setUniform3f("lightColor", light.m_Colour);
 
 	while (!glfwWindowShouldClose(window))
 	{
