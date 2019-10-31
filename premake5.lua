@@ -38,20 +38,23 @@ project "OpenGL"
 		"vendor/GLFW/include",
 		"vendor/GLEW/include",
 		"vendor/GLM",
-		"%{prj.name}/include"
+		"%{prj.name}/include",
+		"vendor/ASSIMP/include"
 	}
 	
 	libdirs 
 	{ 
 	"vendor/GLFW/lib", 
-	"vendor/GLEW/lib"
+	"vendor/GLEW/lib",
+	"vendor/ASSIMP/lib"
 	}
 	
 	links 
 	{
 		"opengl32",
 		"GLFW3",
-		"glew32s"
+		"glew32s",
+		"assimp"
 	}
 	
 	

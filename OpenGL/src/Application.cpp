@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <vector>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -14,7 +15,7 @@
 #include "texture.h"
 #include "renderer.h"
 
-#include "light.h"
+#include <ASSIMP/Importer.hpp>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -44,7 +45,7 @@ int main()
 
 	Shader shader("res/shaders/vertex.shader", "res/shaders/frag.shader");
 
-	float vertices[6 * 24] = {
+	std::vector<float> verts = {
 			-0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.2f, // red square
 			 0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.2f,
 			 0.5f,  0.5f, -0.5f, 0.8f, 0.2f, 0.2f,
@@ -92,7 +93,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	VertexArray va;
-	VertexBuffer vb(vertices, sizeof(vertices));
+	VertexBuffer vb(&verts[0], verts.size() * sizeof(float));
 
 	VertexBufferLayout layout;
 	layout.Push<float>(3);
