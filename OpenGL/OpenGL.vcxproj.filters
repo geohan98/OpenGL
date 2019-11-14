@@ -39,6 +39,8 @@
     <ClInclude Include="include\texture.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\Mesh.h" />
+    <ClInclude Include="include\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\vendor\STB\stb_image.cpp">
@@ -65,5 +67,6 @@
     <ClCompile Include="src\texture.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\Mesh.cpp" />
   </ItemGroup>
 </Project>

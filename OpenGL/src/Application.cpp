@@ -14,6 +14,7 @@
 #include "Shader.h"
 #include "texture.h"
 #include "renderer.h"
+#include "Camera.h"
 
 #include <ASSIMP/Importer.hpp>
 
@@ -43,36 +44,43 @@ int main()
 
 	glewInit();
 
-	Shader shader("res/shaders/vertex.shader", "res/shaders/frag.shader");
+	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+	Shader cubeShader("res/shaders/vertex.shader", "res/shaders/frag.shader");
+	Shader lightShader("res/shaders/lightVertex.shader", "res/shaders/lightFrag.shader");
 
 	std::vector<float> verts = {
-			-0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.2f, // red square
-			 0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.2f,
-			 0.5f,  0.5f, -0.5f, 0.8f, 0.2f, 0.2f,
-			-0.5f,  0.5f, -0.5f,  0.8f, 0.2f, 0.2f,
-			-0.5f, -0.5f, 0.5f, 0.2f, 0.8f, 0.2f, // green square
-			 0.5f, -0.5f, 0.5f, 0.2f, 0.8f, 0.2f,
-			 0.5f,  0.5f, 0.5f, 0.2f, 0.8f, 0.2f,
-			-0.5f,  0.5f, 0.5f,  0.2f, 0.8f, 0.2f,
-			-0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.8f, // magenta(ish) square
-			 0.5f, -0.5f, -0.5f, 0.8f, 0.2f, 0.8f,
-			 0.5f, -0.5f, 0.5f, 0.8f, 0.2f, 0.8f,
-			-0.5f, -0.5f, 0.5f,  0.8f, 0.2f, 0.8f,
-			-0.5f, 0.5f, -0.5f, 0.8f, 0.8f, 0.2f, // yellow square 
-			 0.5f, 0.5f, -0.5f, 0.8f, 0.8f, 0.2f,
-			 0.5f, 0.5f, 0.5f, 0.8f, 0.8f, 0.2f,
-			-0.5f, 0.5f, 0.5f,  0.8f, 0.8f, 0.2f,
-			-0.5f, -0.5f, -0.5f, 0.2f, 0.8f, 0.8f, // Cyan(ish) square 
-			-0.5f,  0.5f, -0.5f,  0.2f, 0.8f, 0.8f,
-			-0.5f,  0.5f, 0.5f, 0.2f, 0.8f, 0.8f,
-			-0.5f,  -0.5f, 0.5f, 0.2f, 0.8f, 0.8f,
-			0.5f, -0.5f, -0.5f, 0.2f, 0.2f, 0.8f, // Blue square 
-			0.5f,  0.5f, -0.5f,  0.2f, 0.2f, 0.8f,
-			0.5f,  0.5f, 0.5f, 0.2f, 0.2f, 0.8f,
-			0.5f,  -0.5f, 0.5f, 0.2f, 0.2f, 0.8f
-	};
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 
-	unsigned int indices[3 * 12] = {
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+	};
+	std::vector<unsigned int> indices = {
 			2, 1, 0,
 			0, 3, 2,
 			4, 5, 6,
@@ -100,22 +108,43 @@ int main()
 	layout.Push<float>(3);
 	va.AddBuffer(vb, layout);
 
-	IndexBuffer ib(indices, 36);
+	IndexBuffer ib(&indices[0], indices.size());
 
 	Renderer renderer;
 
-	shader.Bind();
+	glm::mat4 view = camera.GetViewMatrix();
 
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	shader.setUniformMat4f("model", model);
+	glm::mat4 proj = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
-	glm::mat4 view = glm::mat4(1.0f);
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-	shader.setUniformMat4f("view", view);
+	//Cube
+	cubeShader.Bind();
 
-	glm::mat4 proj = glm::perspective(glm::radians(45.0f), 1.3f, 0.1f, 100.0f);
-	shader.setUniformMat4f("proj", proj);
+	glm::mat4 cube = glm::mat4(1.0f);
+	cube = glm::rotate(cube, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	cube = glm::scale(cube, glm::vec3(0.5f, 0.5f, 0.5f));
+	cube = glm::translate(cube, glm::vec3(-1, 0, 0));
+
+	cubeShader.setUniformMat4f("model", cube);
+	cubeShader.setUniformMat4f("view", view);
+	cubeShader.setUniformMat4f("projection", proj);
+
+	cubeShader.setUniform3f("material.ambient", 1.0f, 0.5f, 0.31f);
+	cubeShader.setUniform3f("material.diffuse", 1.0f, 0.5f, 0.31f);
+	cubeShader.setUniform3f("material.specular", 0.5f, 0.5f, 0.5f);
+	cubeShader.setUniform1f("material.shininess", 32.0f);
+
+
+	//Light
+	lightShader.Bind();
+
+	glm::mat4 light = glm::mat4(1.0f);
+	light = glm::rotate(light, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	light = glm::scale(light, glm::vec3(0.5f, 0.5f, 0.5f));
+	light = glm::translate(light, glm::vec3(1, 0, 0));
+
+	lightShader.setUniformMat4f("model", light);
+	lightShader.setUniformMat4f("view", view);
+	lightShader.setUniformMat4f("projection", proj);
 
 
 	while (!glfwWindowShouldClose(window))
@@ -123,13 +152,9 @@ int main()
 		//Input
 		processInput(window);
 		//Draw
-		shader.Bind();
-		model = glm::rotate(model, (float)glfwGetTime()  / 100 * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-		shader.setUniformMat4f("model", model);
-
-
 		renderer.Clear();
-		renderer.Draw(va, ib, shader);
+		renderer.Draw(va, ib, cubeShader);
+		renderer.Draw(va, ib, lightShader);
 		//Buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
