@@ -7,8 +7,9 @@
 #include "IndexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "Shader.h"
+#include "texture.h"
 
-class Light
+class Plane
 {
 private:
 	glm::vec3 m_Position;
@@ -24,7 +25,8 @@ private:
 	VertexBufferLayout* m_Layout;
 
 	Shader* m_Shader;
+	Texture* m_Texture;
 public:
-	Light(glm::vec3 position, glm::vec3 scale, glm::vec3 color);
-	void Draw(glm::mat4 view, glm::mat4 projection);
+	Plane(glm::vec3 position, glm::vec3 scale, glm::vec3 color);
+	void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 lightPos, glm::vec3 lightColor);
 };

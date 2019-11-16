@@ -1,165 +1,96 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include <iostream>
 #include <vector>
-
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexArray.h"
-#include "Shader.h"
-#include "texture.h"
-#include "renderer.h"
+//#include "Mesh.h"
 #include "Camera.h"
 
-#include <ASSIMP/Importer.hpp>
+#include "Light.h"
+#include "DiffuseCube.h"
+#include "Plane.h"
+
+
+#define WIN_HEIGHT 1200
+#define WIN_WIDTH 1600
+
+#define LOG(...) std::cout << __VA_ARGS__ << std::endl;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-
-
 int main()
 {
-	glfwInit();
+	//------------------------------------------GLFW AND GLEW--------------------------------------------
+	LOG("INITIALISING GLFW");
+	if (!glfwInit())
+	{
+		LOG("FAILED TO INITALISE GLFW");
+	}
+
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(WIN_WIDTH, WIN_HEIGHT, "OpenGL", NULL, NULL);
 	if (window == NULL)
 	{
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
+		LOG("FAILED TO CREATE GLFW WINDOW");
 	}
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-	glewInit();
+	LOG("INITIALISING GLEW");
+	if (glewInit() != GLEW_OK)
+	{
+		LOG("FAILED TO INITALISE GLEW");
+	}
 
-	Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-
-	Shader cubeShader("res/shaders/vertex.shader", "res/shaders/frag.shader");
-	Shader lightShader("res/shaders/lightVertex.shader", "res/shaders/lightFrag.shader");
-
-	std::vector<float> verts = {
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-		 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-	};
-	std::vector<unsigned int> indices = {
-			2, 1, 0,
-			0, 3, 2,
-			4, 5, 6,
-			6, 7, 4,
-			8, 9, 10,
-			10, 11, 8,
-			14, 13, 12,
-			12, 15, 14,
-			18, 17, 16,
-			16, 19, 18,
-			20, 21, 22,
-			22, 23, 20
-	};
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glViewport(0, 0, WIN_WIDTH, WIN_HEIGHT);
 
 	glEnable(GL_DEPTH_TEST);
 
-	VertexArray va;
-	VertexBuffer vb(&verts[0], verts.size() * sizeof(float));
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	VertexBufferLayout layout;
-	layout.Push<float>(3);
-	layout.Push<float>(3);
-	va.AddBuffer(vb, layout);
+	//---------------------------------------------CAMERA-------------------------------------------------
 
-	IndexBuffer ib(&indices[0], indices.size());
+	Camera camera(glm::vec3(0.0f, 2.0f, 10.0f));
+	glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIN_WIDTH / (float)WIN_HEIGHT, 0.1f, 100.0f);
 
-	Renderer renderer;
+	//---------------------------------------------SCEANE-------------------------------------------------
 
-	glm::mat4 view = camera.GetViewMatrix();
+	glm::vec3 lightPos(0.0f, 1.0f, 0.0f);
+	glm::vec3 lightColor(0.2f, 1.0f, 1.0f);
 
-	glm::mat4 proj = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	Light light(lightPos, glm::vec3(1.0f), lightColor);
+	Plane plane(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0, 1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
-	//Cube
-	cubeShader.Bind();
-
-	glm::mat4 cube = glm::mat4(1.0f);
-	cube = glm::rotate(cube, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	cube = glm::scale(cube, glm::vec3(0.5f, 0.5f, 0.5f));
-	cube = glm::translate(cube, glm::vec3(-1, 0, 0));
-
-	cubeShader.setUniformMat4f("model", cube);
-	cubeShader.setUniformMat4f("view", view);
-	cubeShader.setUniformMat4f("projection", proj);
-
-	cubeShader.setUniform3f("material.ambient", 1.0f, 0.5f, 0.31f);
-	cubeShader.setUniform3f("material.diffuse", 1.0f, 0.5f, 0.31f);
-	cubeShader.setUniform3f("material.specular", 0.5f, 0.5f, 0.5f);
-	cubeShader.setUniform1f("material.shininess", 32.0f);
-
-
-	//Light
-	lightShader.Bind();
-
-	glm::mat4 light = glm::mat4(1.0f);
-	light = glm::rotate(light, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	light = glm::scale(light, glm::vec3(0.5f, 0.5f, 0.5f));
-	light = glm::translate(light, glm::vec3(1, 0, 0));
-
-	lightShader.setUniformMat4f("model", light);
-	lightShader.setUniformMat4f("view", view);
-	lightShader.setUniformMat4f("projection", proj);
-
+	//------------------------------------------RENDER LOOP-----------------------------------------------
 
 	while (!glfwWindowShouldClose(window))
 	{
 		//Input
 		processInput(window);
-		//Draw
-		renderer.Clear();
-		renderer.Draw(va, ib, cubeShader);
-		renderer.Draw(va, ib, lightShader);
-		//Buffers
-		glfwSwapBuffers(window);
+		//Render Commands
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//Call Events
 		glfwPollEvents();
+		//Draw
+		plane.Draw(camera.GetViewMatrix(), projection, lightPos, lightColor);
+		//SwapBuffers
+		glfwSwapBuffers(window);
 	}
 
+	//---------------------------------------------CLEANUP------------------------------------------------
+
+	LOG("DESTROYING WINDOW");
+	glfwDestroyWindow(window);
+
+	LOG("TERMINATING GLFW");
 	glfwTerminate();
 	return 0;
 }

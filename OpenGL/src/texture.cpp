@@ -9,6 +9,10 @@ Texture::Texture(const std::string& path) : m_RendererID(0), m_FilePath(path), m
 {
 	stbi_set_flip_vertically_on_load(1);
 	m_LocalBuffer = stbi_load(m_FilePath.c_str(), &m_Width, &m_Height, &m_BPP, 4);
+	if (!m_LocalBuffer)
+	{
+		std::cout << "FAILED TO LOAD TEXTURE" << std::endl;
+	}
 
 	glGenTextures(1, &m_RendererID);
 	glBindTexture(GL_TEXTURE_2D, m_RendererID);

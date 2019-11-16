@@ -8,7 +8,7 @@
 #include "VertexBufferLayout.h"
 #include "Shader.h"
 
-class Light
+class DiffuseCube
 {
 private:
 	glm::vec3 m_Position;
@@ -25,6 +25,6 @@ private:
 
 	Shader* m_Shader;
 public:
-	Light(glm::vec3 position, glm::vec3 scale, glm::vec3 color);
-	void Draw(glm::mat4 view, glm::mat4 projection);
+	DiffuseCube(glm::vec3 position, glm::vec3 scale, glm::vec3 color);
+	void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 lightPos, glm::vec3 lightColor);
 };

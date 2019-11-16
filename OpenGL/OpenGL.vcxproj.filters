@@ -15,7 +15,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Camera.h">
+      <Filter>include</Filter>
+    </ClInclude>
     <ClInclude Include="include\IndexBuffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Mesh.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\Shader.h">
@@ -30,17 +36,15 @@
     <ClInclude Include="include\VertexBufferLayout.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\light.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\renderer.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\texture.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\Mesh.h" />
-    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\Light.h" />
+    <ClInclude Include="include\DiffuseCube.h" />
+    <ClInclude Include="include\Plane.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\vendor\STB\stb_image.cpp">
@@ -50,6 +54,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\IndexBuffer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mesh.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\Shader.cpp">
@@ -67,6 +74,8 @@
     <ClCompile Include="src\texture.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\Light.cpp" />
+    <ClCompile Include="src\DiffuseCube.cpp" />
+    <ClCompile Include="src\Plane.cpp" />
   </ItemGroup>
 </Project>
