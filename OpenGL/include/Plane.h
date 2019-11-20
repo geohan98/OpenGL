@@ -20,8 +20,11 @@ private:
 	VertexBufferLayout* vbl;
 	IndexBuffer* ibo;
 	Shader* shader;
-	Texture* texture;
+	Texture* m_diffuse;
+	bool b_diffuse;
+	Texture* m_normal;
+	bool b_normal;
 public:
-	Plane(glm::vec3 position, std::string vertex, std::string frag, std::string tex);
+	Plane(glm::vec3 position, std::string vertex, std::string frag, std::string diffuse = "NULL", std::string normal = "NULL");
 	void Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPos, glm::vec3 lightPos);
 };

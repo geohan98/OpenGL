@@ -2,7 +2,7 @@
 #include "GL/glew.h"
 
 
-Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::string tex)
+Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::string diffuse, std::string normal)
 {
 	m_Vertices = {
 			-0.5f, 0.0f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
@@ -26,9 +26,12 @@ Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::stri
 	vao->AddBuffer(*vbo, *vbl);
 	shader = new Shader(vertex, frag);
 	shader->Bind();
-	glm::mat4 model = glm::scale(glm::translate(glm::mat4(1.0f), position), glm::vec3(5.0f));
+	glm::mat4 model = glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), position), glm::vec3(5.0f)), glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	shader->setUniformMat4f("model", model);
-	texture = new Texture(tex);
+	shader->setUniform1i("ourTexture", 0);
+	shader->setUniform1i("normalMap", 1);
+	m_diffuse = new Texture(diffuse);
+	m_normal = new Texture(normal);
 }
 
 void Plane::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPos, glm::vec3 lightPos)
@@ -41,6 +44,7 @@ void Plane::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPos, glm:
 	shader->setUniformMat4f("projection", projection);
 	shader->setUniform3f("viewPos", cameraPos);
 	shader->setUniform3f("lightPos", lightPos);
-	texture->Bind();
+	m_diffuse->Bind(0);
+	m_normal->Bind(1);
 	glDrawElements(GL_TRIANGLES, ibo->GetCount(), GL_UNSIGNED_INT, nullptr);
 }

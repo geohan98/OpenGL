@@ -12,17 +12,17 @@
 
 
 
-#define WIN_HEIGHT 600
-#define WIN_WIDTH 800
+#define WIN_HEIGHT 1600
+#define WIN_WIDTH 1800
 
 #define LOG(...) std::cout << __VA_ARGS__ << std::endl;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 2.0f, 6.0f);
-glm::vec3 cameraFront = glm::vec3(0, -0.17365, -0.98481);
-glm::vec3 cameraUp = glm::vec3(0, 0.98481, -0.17365);
+glm::vec3 cameraPos = glm::vec3(0.0f, 2.25f, 10.0f);
+glm::vec3 cameraFront = glm::vec3(0, 0, -1);
+glm::vec3 cameraUp = glm::vec3(0, 1, 0);
 
 float fov = 45.0f;
 
@@ -65,14 +65,8 @@ int main()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//---------------------------------------------SCEANE-------------------------------------------------
-	glm::vec3 lightPos = glm::vec3(0.0f, 1.0f, 0.0f);
-
-	Plane planeAmbient(glm::vec3(0.0f, 0.0f, 0.0f), "res/shaders/ambient.vert", "res/shaders/ambient.frag", "res/textures/GitHub-Mark.png");
-	Plane planeDiffuse(glm::vec3(5.0f, 0.0f, 0.0f), "res/shaders/diffuse.vert", "res/shaders/diffuse.frag", "res/textures/GitHub-Mark.png");
-	Plane planeSpecular(glm::vec3(10.0f, 0.0f, 0.0f), "res/shaders/specular.vert", "res/shaders/specular.frag", "res/textures/GitHub-Mark.png");
-	Plane planePhong(glm::vec3(15.0f, 0.0f, 0.0f), "res/shaders/phong.vert", "res/shaders/phong.frag", "res/textures/GitHub-Mark.png");
-	Plane planeBlinnPhong(glm::vec3(20.0f, 0.0f, 0.0f), "res/shaders/blinnPhong.vert", "res/shaders/blinnPhong.frag", "res/textures/GitHub-Mark.png");
-	Plane planeTexPhong(glm::vec3(25.0f, 0.0f, 0.0f), "res/shaders/texPhong.vert", "res/shaders/texPhong.frag", "res/textures/GitHub-Mark-Light.png");
+	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 5.0f);
+	Plane plane(glm::vec3(0.0f), "res/shaders/normalPhong.vert", "res/shaders/normalPhong.frag", "res/textures/Brick_Diffuse.jpg", "res/textures/Brick_NormalMap.png");
 
 	//----------------------------------------------CAMERA-----------------------------------------------
 
@@ -80,7 +74,6 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
-		lightPos = cameraPos + glm::vec3(0.0f, 0.0f, -10.0f);
 
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -93,12 +86,7 @@ int main()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Draw
-		planeAmbient.Draw(view, projection, cameraPos, lightPos);
-		planeDiffuse.Draw(view, projection, cameraPos, lightPos);
-		planeSpecular.Draw(view, projection, cameraPos, lightPos);
-		planePhong.Draw(view, projection, cameraPos, lightPos);
-		planeTexPhong.Draw(view, projection, cameraPos, lightPos);
-		planeBlinnPhong.Draw(view, projection, cameraPos, lightPos);
+		plane.Draw(view, projection, cameraPos, lightPos);
 		//SwapBuffers
 		glfwSwapBuffers(window);
 		//Call Events
