@@ -52,10 +52,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Camera.h" />
-    <ClInclude Include="include\DiffuseCube.h" />
     <ClInclude Include="include\IndexBuffer.h" />
-    <ClInclude Include="include\Light.h" />
-    <ClInclude Include="include\Mesh.h" />
     <ClInclude Include="include\Plane.h" />
     <ClInclude Include="include\Shader.h" />
     <ClInclude Include="include\VertexArray.h" />
@@ -67,10 +64,7 @@
   <ItemGroup>
     <ClCompile Include="..\vendor\STB\stb_image.cpp" />
     <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\DiffuseCube.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
-    <ClCompile Include="src\Light.cpp" />
-    <ClCompile Include="src\Mesh.cpp" />
     <ClCompile Include="src\Plane.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\VertexArray.cpp" />
