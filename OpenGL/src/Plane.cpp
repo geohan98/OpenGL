@@ -2,7 +2,7 @@
 #include "GL/glew.h"
 
 
-Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::string diffuse, std::string normal)
+Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::string diffuse, std::string normal, std::string height)
 {
 	m_Vertices = {
 			-0.5f, 0.0f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
@@ -30,8 +30,10 @@ Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::stri
 	shader->setUniformMat4f("model", model);
 	shader->setUniform1i("ourTexture", 0);
 	shader->setUniform1i("normalMap", 1);
+	shader->setUniform1i("heightMap", 2);
 	m_diffuse = new Texture(diffuse);
 	m_normal = new Texture(normal);
+	m_displacement = new Texture(height);
 }
 
 void Plane::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPos, glm::vec3 lightPos)
@@ -46,5 +48,6 @@ void Plane::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPos, glm:
 	shader->setUniform3f("lightPos", lightPos);
 	m_diffuse->Bind(0);
 	m_normal->Bind(1);
+	m_displacement->Bind(2);
 	glDrawElements(GL_TRIANGLES, ibo->GetCount(), GL_UNSIGNED_INT, nullptr);
 }

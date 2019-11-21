@@ -31,5 +31,5 @@ void main()
 	vec3 specular = specularStrength * spec * vec3(1.0f); 
 	
 	vec3 result = vec3(spec) + vec3(diff) + vec3(ambient);
-    FragColor = vec4(result,1.0f);
+    FragColor = vec4(result,1.0f) * texture(ourTexture,TexCoord);
 }

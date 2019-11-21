@@ -66,7 +66,7 @@ int main()
 
 	//---------------------------------------------SCEANE-------------------------------------------------
 	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 5.0f);
-	Plane plane(glm::vec3(0.0f), "res/shaders/normalPhong.vert", "res/shaders/normalPhong.frag", "res/textures/Brick_Diffuse.jpg", "res/textures/Brick_NormalMap.png");
+	Plane plane(glm::vec3(0.0f), "res/shaders/paralaxPhong.vert", "res/shaders/paralaxPhong.frag", "res/textures/Brick_Diffuse.jpg", "res/textures/Brick_NormalMap.png", "res/textures/Brick_DisplacementMap.png");
 
 	//----------------------------------------------CAMERA-----------------------------------------------
 
