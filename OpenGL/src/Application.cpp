@@ -12,19 +12,19 @@
 
 
 
-#define WIN_HEIGHT 1600
-#define WIN_WIDTH 1800
+#define WIN_HEIGHT 600
+#define WIN_WIDTH 800
 
 #define LOG(...) std::cout << __VA_ARGS__ << std::endl;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 2.25f, 10.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 2.25f, 5.0f);
 glm::vec3 cameraFront = glm::vec3(0, 0, -1);
 glm::vec3 cameraUp = glm::vec3(0, 1, 0);
 
-float fov = 45.0f;
+float fov = 90.0f;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
@@ -65,8 +65,8 @@ int main()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//---------------------------------------------SCEANE-------------------------------------------------
-	glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 5.0f);
-	Plane plane(glm::vec3(0.0f), "res/shaders/paralaxPhong.vert", "res/shaders/paralaxPhong.frag", "res/textures/Brick_Diffuse.jpg", "res/textures/Brick_NormalMap.png", "res/textures/Brick_DisplacementMap.png");
+	glm::vec3 lightPos = glm::vec3(0.0f, 5.0f, -10.0f);
+	Plane plane(glm::vec3(-2.5f, 0.0f, 0.0f), "res/shaders/paralaxPhong.vert", "res/shaders/paralaxPhong.frag", "res/textures/Brick_Diffuse.jpg", "res/textures/normal_mapping_normal_map.png", "res/textures/Brick_DisplacementMap.png");
 
 	//----------------------------------------------CAMERA-----------------------------------------------
 
@@ -74,6 +74,7 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
+	
 
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -91,7 +92,6 @@ int main()
 		glfwSwapBuffers(window);
 		//Call Events
 		glfwPollEvents();
-
 
 	}
 
