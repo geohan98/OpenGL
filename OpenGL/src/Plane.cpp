@@ -11,7 +11,7 @@ Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::stri
 			-0.5f, 0.0f, 0.5f,	0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
 	};
 
-	
+
 
 	// positions
 	glm::vec3 pos1(-0.5f, 0.0f, -0.5f);
@@ -96,7 +96,7 @@ Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::stri
 	vao->AddBuffer(*vbo, *vbl);
 	shader = new Shader(vertex, frag);
 	shader->Bind();
-	glm::mat4 model = glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), position), glm::vec3(5.0f)), glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	glm::mat4 model = glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), position), glm::vec3(5.0f)), glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	shader->setUniformMat4f("model", model);
 	shader->setUniform1i("diffuseMap", 0);
 	shader->setUniform1i("normalMap", 1);

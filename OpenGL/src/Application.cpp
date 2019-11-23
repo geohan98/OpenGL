@@ -12,15 +12,15 @@
 
 
 
-#define WIN_HEIGHT 600
-#define WIN_WIDTH 800
+#define WIN_HEIGHT 900
+#define WIN_WIDTH 1200
 
 #define LOG(...) std::cout << __VA_ARGS__ << std::endl;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 2.25f, 5.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 2.25f, 5.5f);
 glm::vec3 cameraFront = glm::vec3(0, 0, -1);
 glm::vec3 cameraUp = glm::vec3(0, 1, 0);
 
@@ -65,8 +65,13 @@ int main()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	//---------------------------------------------SCEANE-------------------------------------------------
-	glm::vec3 lightPos = glm::vec3(0.0f, 5.0f, -10.0f);
-	Plane plane(glm::vec3(-2.5f, 0.0f, 0.0f), "res/shaders/paralaxPhong.vert", "res/shaders/paralaxPhong.frag", "res/textures/Brick_Diffuse.jpg", "res/textures/normal_mapping_normal_map.png", "res/textures/Brick_DisplacementMap.png");
+	glm::vec3 lightPos = glm::vec3(0.0f, 10.0f, -19.0f);
+	Plane plane(glm::vec3(0.0f, 0.0f, 0.0f), "res/shaders/phong.vert", "res/shaders/phong.frag", "res/textures/bricks2.jpg", "res/textures/bricks2_normal.jpg", "res/textures/bricks2_disp.jpg");
+	Plane plane1(glm::vec3(5.0f, 0.0f, 0.0f), "res/shaders/blinnPhong.vert", "res/shaders/blinnPhong.frag", "res/textures/bricks2.jpg", "res/textures/bricks2_normal.jpg", "res/textures/bricks2_disp.jpg");
+	Plane plane2(glm::vec3(10.0f, 0.0f, 0.0f), "res/shaders/texPhong.vert", "res/shaders/texPhong.frag", "res/textures/bricks2.jpg", "res/textures/bricks2_normal.jpg", "res/textures/bricks2_disp.jpg");
+	Plane plane3(glm::vec3(15.0f, 0.0f, 0.0f), "res/shaders/texBlinPhong.vert", "res/shaders/texBlinPhong.frag", "res/textures/bricks2.jpg", "res/textures/bricks2_normal.jpg", "res/textures/bricks2_disp.jpg");
+	Plane plane4(glm::vec3(20.0f, 0.0f, 0.0f), "res/shaders/normalBlinnPhong.vert", "res/shaders/normalBlinnPhong.frag", "res/textures/bricks2.jpg", "res/textures/bricks2_normal.jpg", "res/textures/bricks2_disp.jpg");
+	Plane plane5(glm::vec3(25.0f, 0.0f, 0.0f), "res/shaders/paralaxBlinnPhong.vert", "res/shaders/paralaxBlinnPhong.frag", "res/textures/bricks2.jpg", "res/textures/bricks2_normal.jpg", "res/textures/bricks2_disp.jpg");
 
 	//----------------------------------------------CAMERA-----------------------------------------------
 
@@ -74,7 +79,7 @@ int main()
 
 	while (!glfwWindowShouldClose(window))
 	{
-	
+
 
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -87,7 +92,18 @@ int main()
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//Draw
+		lightPos = glm::vec3(0.0f, 10.0f, -19.0f);
 		plane.Draw(view, projection, cameraPos, lightPos);
+		lightPos = glm::vec3(5.0f, 10.0f, -19.0f);
+		plane1.Draw(view, projection, cameraPos, lightPos);
+		lightPos = glm::vec3(10.0f, 10.0f, -19.0f);
+		plane2.Draw(view, projection, cameraPos, lightPos);
+		lightPos = glm::vec3(15.0f, 10.0f, -19.0f);
+		plane3.Draw(view, projection, cameraPos, lightPos);
+		lightPos = glm::vec3(20.0f, 10.0f, -19.0f);
+		plane4.Draw(view, projection, cameraPos, lightPos);
+		lightPos = glm::vec3(25.0f, 10.0f, -19.0f);
+		plane5.Draw(view, projection, cameraPos, lightPos);
 		//SwapBuffers
 		glfwSwapBuffers(window);
 		//Call Events

@@ -7,8 +7,6 @@ in vec3 TangentLightPos;
 in vec3 TangentViewPos;
 in vec3 TangentFragPos;
 
-uniform vec3 lightPos;
-uniform vec3 viewPos;
 uniform sampler2D diffuseMap;
 uniform sampler2D normalMap;
 
@@ -16,16 +14,20 @@ void main()
 {
     vec3 normal = texture(normalMap, TexCoord).rgb;
     normal = normalize(normal * 2.0 - 1.0);
+
+    vec3 viewDir = normalize(TangentViewPos - TangentFragPos);
+    vec3 lightDir = normalize(TangentLightPos - TangentFragPos);
+    vec3 halfwayDir = normalize(lightDir + viewDir);  
    
     vec3 color = texture(diffuseMap, TexCoord).rgb;
+
     vec3 ambient = 0.1 * color;
-    vec3 lightDir = normalize(TangentLightPos - TangentFragPos);
+
     float diff = max(dot(lightDir, normal), 0.0);
     vec3 diffuse = diff * color;
-    vec3 viewDir = normalize(TangentViewPos - TangentFragPos);
-    vec3 reflectDir = reflect(-lightDir, normal);
-    vec3 halfwayDir = normalize(lightDir + viewDir);  
-    float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
-    vec3 specular = vec3(0.2) * spec;
+
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), 64.0);
+    vec3 specular = vec3(0.5) * spec;
+
     FragColor = vec4(ambient + diffuse + specular, 1.0);
 }
