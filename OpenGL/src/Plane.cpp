@@ -29,6 +29,7 @@ Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::stri
 	// calculate tangent/bitangent vectors of both triangles
 	glm::vec3 tangent1, bitangent1;
 	glm::vec3 tangent2, bitangent2;
+	
 	// triangle 1
 	// ----------
 	glm::vec3 edge1 = pos2 - pos1;
