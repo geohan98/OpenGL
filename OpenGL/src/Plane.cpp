@@ -4,21 +4,12 @@
 
 Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::string diffuse, std::string normal, std::string height)
 {
-	m_Vertices = {
-			-0.5f, 0.0f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-			 0.5f, 0.0f, -0.5f,	0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-			 0.5f, 0.0f, 0.5f,	0.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-			-0.5f, 0.0f, 0.5f,	0.0f, 1.0f, 0.0f, 0.0f, 0.0f,
-	};
-
-
-
 	// positions
 	glm::vec3 pos1(-0.5f, 0.0f, -0.5f);
 	glm::vec3 pos2(0.5f, 0.0f, -0.5f);
 	glm::vec3 pos3(0.5f, 0.0f, 0.5f);
 	glm::vec3 pos4(-0.5f, 0.0f, 0.5f);
-	// texture coordinates
+	// tex coords
 	glm::vec2 uv1(0.0f, 1.0f);
 	glm::vec2 uv2(1.0f, 1.0f);
 	glm::vec2 uv3(1.0f, 0.0f);
@@ -26,12 +17,11 @@ Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::stri
 	// normal vector
 	glm::vec3 nm(0.0f, 1.0f, 0.0f);
 
-	// calculate tangent/bitangent vectors of both triangles
+	// calculate tangent/bitangent vectors
 	glm::vec3 tangent1, bitangent1;
 	glm::vec3 tangent2, bitangent2;
-	
-	// triangle 1
-	// ----------
+
+	// triangle one
 	glm::vec3 edge1 = pos2 - pos1;
 	glm::vec3 edge2 = pos3 - pos1;
 	glm::vec2 deltaUV1 = uv2 - uv1;
@@ -49,8 +39,7 @@ Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::stri
 	bitangent1.z = f * (-deltaUV2.x * edge1.z + deltaUV1.x * edge2.z);
 	bitangent1 = glm::normalize(bitangent1);
 
-	// triangle 2
-	// ----------
+	// triangle two
 	edge1 = pos3 - pos1;
 	edge2 = pos4 - pos1;
 	deltaUV1 = uv3 - uv1;
@@ -71,7 +60,7 @@ Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::stri
 
 
 	float quadVertices[] = {
-		// positions            // normal         // texcoords  // tangent                          // bitangent
+		//positions				normal			  texcoords		tangent								bitangent
 		pos1.x, pos1.y, pos1.z, nm.x, nm.y, nm.z, uv1.x, uv1.y, tangent1.x, tangent1.y, tangent1.z, bitangent1.x, bitangent1.y, bitangent1.z,
 		pos2.x, pos2.y, pos2.z, nm.x, nm.y, nm.z, uv2.x, uv2.y, tangent1.x, tangent1.y, tangent1.z, bitangent1.x, bitangent1.y, bitangent1.z,
 		pos3.x, pos3.y, pos3.z, nm.x, nm.y, nm.z, uv3.x, uv3.y, tangent1.x, tangent1.y, tangent1.z, bitangent1.x, bitangent1.y, bitangent1.z,
@@ -98,7 +87,7 @@ Plane::Plane(glm::vec3 position, std::string vertex, std::string frag, std::stri
 	shader = new Shader(vertex, frag);
 	shader->Bind();
 	glm::mat4 model = glm::rotate(glm::scale(glm::translate(glm::mat4(1.0f), position), glm::vec3(5.0f)), glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	shader->setUniformMat4f("model", model);
+	shader->setUniformMat4f("model", model); // Upload Model Matrix
 	shader->setUniform1i("diffuseMap", 0);
 	shader->setUniform1i("normalMap", 1);
 	shader->setUniform1i("heightMap", 2);
@@ -113,8 +102,8 @@ void Plane::Draw(glm::mat4 view, glm::mat4 projection, glm::vec3 cameraPos, glm:
 	vbo->Bind();
 	vao->Bind();
 	shader->Bind();
-	shader->setUniformMat4f("view", view);
-	shader->setUniformMat4f("projection", projection);
+	shader->setUniformMat4f("view", view); //Upload View Maxtrix
+	shader->setUniformMat4f("projection", projection); //Upload Projection Matrix
 	shader->setUniform3f("viewPos", cameraPos);
 	shader->setUniform3f("lightPos", lightPos);
 	m_diffuse->Bind(0);

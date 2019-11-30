@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Camera.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\IndexBuffer.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -34,9 +31,6 @@
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\VertexBufferLayout.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\renderer.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\texture.h">
@@ -63,9 +57,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\VertexBuffer.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderer.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\texture.cpp">

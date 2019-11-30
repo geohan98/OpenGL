@@ -12,9 +12,9 @@
 class Shader
 {
 private:
-	std::string m_FilePath;
 	unsigned int m_RendererID;
-	std::unordered_map < std::string, int > m_UniformLocationCache;
+	std::string m_FilePath;
+	std::unordered_map < std::string, int > m_UniformLocationCache; //Used to cache uniform locations
 
 	int GetUniformLocation(const std::string& name);
 	std::string ParseShader(const std::string& filepath);
@@ -27,6 +27,7 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
+	//Used to set Uniforms
 	void setUniform1i(const std::string& name, int value);
 	void setUniform4f(const std::string& name, float f1, float f2, float f3, float f4);
 	void setUniform3f(const std::string& name, float f1, float f2, float f3);

@@ -7,7 +7,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 
-#include "Camera.h"
 #include "Plane.h"
 
 

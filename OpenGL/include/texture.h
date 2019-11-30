@@ -7,10 +7,10 @@
 class Texture
 {
 private:
-	unsigned int m_RendererID;
-	std::string m_FilePath;
+	unsigned int m_RendererID; //Object ID
+	std::string m_FilePath; //File path for texture
 	unsigned char* m_LocalBuffer;
-	int m_Width, m_Height, m_BPP;
+	int m_Width, m_Height, m_BPP; // Width, Height, BitsPerPixel
 public:
 	Texture(const std::string& path);
 	~Texture();
