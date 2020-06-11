@@ -1,11 +1,10 @@
 # Directories
-.vs/
-bin/
-build/
+.vs/*
+bin/*
+build/*
 
 # Files
-*.user
+*.sln
 *.vcxproj
 *.vcxproj.filters
 *.vcxproj.user
-*.sln
